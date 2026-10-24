@@ -23,6 +23,7 @@ services:
       - ./frontend:/usr/share/nginx/html:ro
     networks:
       - frontend-net
+      - logging-net
     depends_on:
       chat-app:
         condition: service_healthy
@@ -71,6 +72,7 @@ services:
       - frontend-net
       - backend-net
       - monitoring-net
+      - logging-net
     depends_on:
       postgres:
         condition: service_healthy
@@ -204,6 +206,7 @@ services:
       - grafana_data:/var/lib/grafana
     networks:
       - monitoring-net
+      - logging-net
     depends_on:
       prometheus:
         condition: service_healthy
@@ -222,7 +225,59 @@ services:
           memory: 256M
 
   # ------------------------------------------------------------------
-  # 7. Host OS Metrics Exporter (Node Exporter)
+  # 7. Grafana Loki Centralized Log Aggregator
+  # ------------------------------------------------------------------
+  loki:
+    image: grafana/loki:3.0.0
+    container_name: chat-loki
+    restart: unless-stopped
+    command: -config.file=/etc/loki/loki-config.yml
+    volumes:
+      - ./logging/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki_data:/loki
+    networks:
+      - logging-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:3100/ready || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 384M
+
+  # ------------------------------------------------------------------
+  # 8. Promtail Docker Log Shipper
+  # ------------------------------------------------------------------
+  promtail:
+    image: grafana/promtail:3.0.0
+    container_name: chat-promtail
+    restart: unless-stopped
+    command: -config.file=/etc/promtail/promtail-config.yml
+    volumes:
+      - ./logging/promtail/promtail-config.yml:/etc/promtail/promtail-config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    networks:
+      - logging-net
+    depends_on:
+      loki:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+
+  # ------------------------------------------------------------------
+  # 9. Host OS Metrics Exporter (Node Exporter)
   # ------------------------------------------------------------------
   node-exporter:
     image: prom/node-exporter:v1.8.0
@@ -246,7 +301,7 @@ services:
           memory: 64M
 
   # ------------------------------------------------------------------
-  # 8. Container Resource Metrics (cAdvisor)
+  # 10. Container Resource Metrics (cAdvisor)
   # ------------------------------------------------------------------
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.49.1
@@ -268,7 +323,7 @@ services:
           memory: 256M
 
   # ------------------------------------------------------------------
-  # 9. PostgreSQL Metrics Exporter
+  # 11. PostgreSQL Metrics Exporter
   # ------------------------------------------------------------------
   postgres-exporter:
     image: prometheuscommunity/postgres-exporter:v0.15.0
@@ -300,6 +355,8 @@ networks:
     driver: bridge
   monitoring-net:
     driver: bridge
+  logging-net:
+    driver: bridge
 
 # --------------------------------------------------------------------
 # VOLUMES DEFINITIONS (Data Persistence)
@@ -310,4 +367,6 @@ volumes:
   prometheus_data:
     driver: local
   grafana_data:
+    driver: local
+  loki_data:
     driver: local
