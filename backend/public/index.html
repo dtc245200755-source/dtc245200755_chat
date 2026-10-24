@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Internal Chat — Hệ Thống Nhắn Tin Nội Bộ Thời Gian Thực">
+  <title>Internal Chat — Nhắn Tin Thời Gian Thực</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    
+    <!-- 1. CỘT 1: NAV RAIL (64px) — Indigo & Blue Accent -->
+    <nav class="nav-rail" aria-label="Điều hướng chính">
+      <div class="rail-top">
+        <!-- Logo Chat Bubble -->
+        <div class="rail-brand-icon" id="rail-logo-btn" title="Internal Chat">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+          </svg>
+        </div>
+
+        <div class="rail-nav-menu">
+          <!-- Active Chat Tab -->
+          <button class="rail-item active" id="rail-btn-chat" title="Kênh chat & Tin nhắn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </button>
+
+          <!-- Team / Members Tab -->
+          <button class="rail-item" id="rail-btn-team" title="Danh sách thành viên">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </button>
+
+          <!-- Notifications Bell -->
+          <button class="rail-item" id="rail-btn-notifications" title="Thông báo hệ thống">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+          </button>
+
+          <!-- Settings / Profile Modal Trigger -->
+          <button class="rail-item" id="rail-btn-settings" title="Cài đặt hồ sơ & Mật khẩu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Rail Bottom Avatar -->
+      <div class="rail-bottom">
+        <div class="rail-avatar-wrapper" id="rail-profile-avatar" title="Xem hồ sơ tài khoản">
+          <img src="/assets/avatars/default.svg" alt="Avatar" class="rail-avatar" id="rail-avatar-img">
+          <span class="rail-status-dot"></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 2. CỘT 2: CHANNELS & USERS SIDEBAR (280px) -->
+    <aside class="chat-sidebar" id="chat-sidebar">
+      <!-- Header -->
+      <div class="sidebar-header">
+        <div class="sidebar-title-badge">
+          <span class="sidebar-love-icon">💬</span>
+          <span class="sidebar-title">Internal Chat</span>
+        </div>
+        <button class="btn-sidebar-icon" id="btn-logout" title="Đăng xuất khỏi hệ thống">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Search Input -->
+      <div class="sidebar-search-box">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="sidebar-search-input" class="search-input" placeholder="Tìm kênh & thành viên...">
+        </div>
+      </div>
+
+      <!-- Scrollable Sections -->
+      <div class="sidebar-content">
+        <!-- Channels Section -->
+        <div class="sidebar-section">
+          <div class="section-header">
+            <span class="section-label">Phòng Trò Chuyện</span>
+            <button class="btn-add-channel" id="btn-create-channel" title="Tạo phòng chat mới">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+          </div>
+          
+          <div id="channels-container" class="channels-list">
+            <!-- Dynamically rendered by chat.js -->
+          </div>
+        </div>
+
+        <!-- Users Section -->
+        <div class="sidebar-section">
+          <div class="section-header">
+            <span class="section-label">Thành Viên</span>
+            <span id="users-count-badge" style="font-size: 11px; color: var(--rose); font-weight: 700;"></span>
+          </div>
+
+          <div id="users-container" class="users-list">
+            <!-- Dynamically rendered by chat.js from real PostgreSQL database -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer User Profile Bar -->
+      <div class="sidebar-footer">
+        <div class="footer-profile" id="footer-profile-box" title="Nhấp để chỉnh sửa hồ sơ">
+          <div class="footer-avatar-box">
+            <img src="/assets/avatars/default.svg" alt="Avatar" class="footer-avatar" id="footer-user-avatar">
+            <span class="footer-status-dot"></span>
+          </div>
+          <div class="footer-details">
+            <span class="footer-name" id="footer-user-name">Đang tải...</span>
+            <span class="footer-role" id="footer-user-status">Đang trực tuyến</span>
+          </div>
+        </div>
+        <button class="btn-sidebar-icon" id="btn-user-settings" title="Cài đặt tài khoản">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- 3. CỘT 3: MAIN CHAT PANEL -->
+    <main class="chat-main">
+      <!-- Chat Header -->
+      <header class="chat-header">
+        <div class="header-left">
+          <!-- Mobile sidebar toggle -->
+          <button class="btn-sidebar-icon btn-mobile-sidebar-toggle" id="btn-mobile-toggle" style="display: none;" title="Mở menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+
+          <div class="header-hashtag-badge" id="active-hashtag-icon">#</div>
+          <div class="header-title-box">
+            <h1 class="header-room-title" id="active-channel-name">Chưa chọn phòng</h1>
+            <span class="header-room-subtitle" id="active-channel-desc">Chọn hoặc tạo một phòng trò chuyện để bắt đầu</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <button class="btn-header-gear" id="btn-room-info" title="Thông tin phòng chat">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </button>
+
+          <!-- Stack of Active Members -->
+          <div class="header-members-group" id="header-members-group">
+            <div class="avatar-stack" id="header-avatar-stack">
+              <!-- Rendered by chat.js -->
+            </div>
+            <span class="header-members-text" id="header-members-text">Thành viên trực tuyến</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Real-time Connection Strip -->
+      <div class="system-notice-banner" id="system-notice-banner">
+        <div>
+          <span class="notice-status-dot"></span>
+          <span id="connection-state-text">Kết nối thời gian thực ổn định (WebSocket Realtime)</span>
+        </div>
+        <span style="font-size: 11.5px; opacity: 0.9;" id="db-status-badge">PostgreSQL • Nginx TLS</span>
+      </div>
+
+      <!-- Messages Stream -->
+      <div class="messages-feed" id="messages-feed">
+        <!-- Messages rendered dynamically by chat.js -->
+      </div>
+
+      <!-- Typing Indicator Bar -->
+      <div class="typing-bar" id="typing-indicator"></div>
+
+      <!-- Bottom Chat Input Bar -->
+      <div class="chat-input-wrapper">
+        <form class="chat-input-card" id="chat-input-form">
+          <input 
+            type="text" 
+            id="chat-message-input" 
+            class="chat-text-input" 
+            placeholder="Nhập tin nhắn..."
+            autocomplete="off"
+            maxlength="2000"
+          >
+          
+          <div class="input-actions">
+            <!-- Send Button -->
+            <button type="submit" class="btn-send-message" id="btn-submit-message" title="Gửi tin nhắn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+              <span>Gửi</span>
+            </button>
+
+            <!-- Quick Reaction Button -->
+            <button type="button" class="btn-input-icon" id="btn-quick-heart" title="Gửi nhanh (👍)">
+              👍
+            </button>
+
+            <!-- Interactive Emoji Picker Button -->
+            <button type="button" class="btn-input-icon" id="btn-emoji" title="Chọn biểu tượng cảm xúc">
+              😊
+            </button>
+
+            <!-- Mention Button -->
+            <button type="button" class="btn-input-icon" id="btn-mention" title="Nhắc tên thành viên (@)">
+              @
+            </button>
+
+            <!-- Attachment Button -->
+            <button type="button" class="btn-input-icon" id="btn-attach" title="Đính kèm tệp tin">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Interactive Emoji Picker Popover -->
+          <div class="emoji-popover" id="emoji-popover">
+            <div class="emoji-popover-title">Biểu Tượng Cảm Xúc</div>
+            <div class="emoji-grid" id="emoji-grid">
+              <!-- Filled with emojis by chat.js -->
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal 1: Tạo Kênh / Phòng Mới -->
+  <div class="modal-overlay" id="create-channel-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title"><span>💬</span> Tạo Phòng Trò Chuyện Mới</h2>
+        <button class="btn-modal-close" id="btn-close-modal">✕</button>
+      </div>
+      <form id="create-channel-form">
+        <div class="form-field">
+          <label class="form-label" for="modal-channel-name">Tên phòng chat *</label>
+          <input type="text" id="modal-channel-name" class="form-input" placeholder="VD: Phòng Dự Án" required maxlength="50">
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="modal-channel-desc">Mô tả mục đích phòng</label>
+          <input type="text" id="modal-channel-desc" class="form-input" placeholder="VD: Nơi trao đổi thông tin dự án" maxlength="150">
+        </div>
+        <div class="form-field" style="flex-direction: row; align-items: center; gap: 8px;">
+          <input type="checkbox" id="modal-channel-private" style="accent-color: var(--primary-pink); width: 16px; height: 16px;">
+          <label for="modal-channel-private" class="form-label" style="margin: 0; cursor: pointer;">Phòng riêng tư (Chỉ thành viên được mời)</label>
+        </div>
+        <div class="modal-buttons">
+          <button type="button" class="btn-cancel" id="btn-cancel-modal">Hủy bỏ</button>
+          <button type="submit" class="btn-submit">Tạo Phòng Ngay</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Quản Lý Hồ Sơ & Đổi Mật Khẩu (Profile Management) -->
+  <div class="modal-overlay" id="profile-modal">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header">
+        <h2 class="modal-title"><span>👤</span> Hồ Sơ Tài Khoản Của Bạn</h2>
+        <button class="btn-modal-close" id="btn-close-profile-modal">✕</button>
+      </div>
+
+      <div id="profile-alert" style="display: none; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 600;"></div>
+
+      <!-- Profile Info & Edit -->
+      <form id="form-edit-profile">
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px; padding: 12px; background: var(--soft-pink); border-radius: var(--radius-md);">
+          <img src="/assets/avatars/default.svg" width="52" height="52" style="border-radius: 50%; border: 2px solid var(--primary-pink); background: #FFF;" id="modal-avatar-preview">
+          <div>
+            <div style="font-size: 16px; font-weight: 800; color: var(--text-dark);" id="modal-username-display">@...</div>
+            <div style="font-size: 12px; color: var(--rose); font-weight: 600;" id="modal-role-display">Thành viên Internal Chat</div>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="profile-display-name">Tên hiển thị *</label>
+          <input type="text" id="profile-display-name" class="form-input" required maxlength="50">
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="profile-email">Email</label>
+          <input type="email" id="profile-email" class="form-input">
+        </div>
+
+        <button type="submit" class="btn-submit" style="width: 100%; margin-bottom: 20px;" id="btn-save-profile">
+          Lưu Thay Đổi Thông Tin
+        </button>
+      </form>
+
+      <!-- Change Password Section -->
+      <div style="border-top: 1.5px dashed var(--border-light); padding-top: 16px;">
+        <h3 style="font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">Đổi Mật Khẩu Bảo Mật</h3>
+        <form id="form-change-password">
+          <div class="form-field">
+            <label class="form-label" for="profile-current-pass">Mật khẩu hiện tại *</label>
+            <input type="password" id="profile-current-pass" class="form-input" required>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="profile-new-pass">Mật khẩu mới (tối thiểu 6 ký tự) *</label>
+            <input type="password" id="profile-new-pass" class="form-input" required minlength="6">
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="profile-confirm-new-pass">Xác nhận mật khẩu mới *</label>
+            <input type="password" id="profile-confirm-new-pass" class="form-input" required minlength="6">
+          </div>
+          <button type="submit" class="btn-submit" style="width: 100%; background: var(--gradient-button);" id="btn-save-password">
+            Cập Nhật Mật Khẩu Mới
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Danh Sách Thành Viên (Team Members) -->
+  <div class="modal-overlay" id="members-modal">
+    <div class="modal-dialog" style="max-width: 520px;">
+      <div class="modal-header">
+        <h2 class="modal-title"><span>👥</span> Thành Viên Internal Chat</h2>
+        <button class="btn-modal-close" id="btn-close-members-modal">✕</button>
+      </div>
+      <div class="members-search-box">
+        <input type="text" id="members-modal-search" class="form-input" placeholder="Tìm kiếm bạn bè theo tên hoặc @username...">
+      </div>
+      <div class="members-dialog-list" id="members-dialog-list">
+        <!-- Rendered by chat.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Thông Báo Hệ Thống (Notifications) -->
+  <div class="modal-overlay" id="notifications-modal">
+    <div class="modal-dialog" style="max-width: 500px;">
+      <div class="modal-header">
+        <h2 class="modal-title"><span>🔔</span> Hộp Thông Báo Internal Chat</h2>
+        <button class="btn-modal-close" id="btn-close-notif-modal">✕</button>
+      </div>
+      <div class="notifications-dialog-list">
+        <div class="notification-dialog-card">
+          <div class="notif-icon-box">🎉</div>
+          <div class="notif-content-box">
+            <div class="notif-title">Chào mừng bạn đến với Internal Chat!</div>
+            <div class="notif-desc">Hệ thống nhắn tin thời gian thực đã sẵn sàng kết nối bạn và đồng nghiệp.</div>
+            <div class="notif-time">Vừa xong • Trực tuyến</div>
+          </div>
+        </div>
+        <div class="notification-dialog-card">
+          <div class="notif-icon-box">🔒</div>
+          <div class="notif-content-box">
+            <div class="notif-title">Mã hóa bảo mật toàn diện</div>
+            <div class="notif-desc">Kênh truyền Nginx TLS 1.3 và WebSocket WSS đang bảo vệ mọi thông điệp của bạn.</div>
+            <div class="notif-time">Hạ tầng an toàn • Nginx</div>
+          </div>
+        </div>
+        <div class="notification-dialog-card">
+          <div class="notif-icon-box">⚡</div>
+          <div class="notif-content-box">
+            <div class="notif-title">Cơ sở dữ liệu PostgreSQL 16</div>
+            <div class="notif-desc">Lịch sử tin nhắn được lưu trữ bền vững, tự động sao lưu và bảo toàn toàn vẹn.</div>
+            <div class="notif-time">Database UP • 5432</div>
+          </div>
+        </div>
+        <div class="notification-dialog-card">
+          <div class="notif-icon-box">💼</div>
+          <div class="notif-content-box">
+            <div class="notif-title">Chúc làm việc hiệu quả</div>
+            <div class="notif-desc">Chúc bạn có những cuộc trao đổi công việc thật hiệu quả và thuận lợi!</div>
+            <div class="notif-time">Hôm nay • Internal Chat Team</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: Thông Tin Phòng Chat (Room Info) & Quản Lý Thành Viên -->
+  <div class="modal-overlay" id="room-info-modal">
+    <div class="modal-dialog" style="max-width: 500px;">
+      <div class="modal-header">
+        <h2 class="modal-title"><span>ℹ️</span> Thông Tin & Quản Lý Phòng</h2>
+        <button class="btn-modal-close" id="btn-close-room-info-modal">✕</button>
+      </div>
+      <div class="room-info-box">
+        <div class="room-info-header-card">
+          <div class="room-info-badge" id="info-room-badge">Phòng Công Khai</div>
+          <h3 style="font-size: 18px; font-weight: 800; color: var(--text-dark);" id="info-room-name">Phòng Chung</h3>
+          <p style="font-size: 13.5px; color: var(--text-body);" id="info-room-desc">Không gian trò chuyện và trao đổi công việc</p>
+        </div>
+
+        <!-- Add Member Section (Admin only — hidden for regular users) -->
+        <div id="add-member-section" style="background: var(--soft-pink-subtle); padding: 12px 14px; border-radius: var(--radius-md); border: 1.5px dashed var(--rose);">
+          <label class="form-label" for="select-add-member" style="font-size: 12.5px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">
+            ➕ Thêm thành viên vào phòng chat này:
+          </label>
+          <div style="display: flex; gap: 8px;">
+            <select id="select-add-member" class="form-input" style="flex: 1; padding: 7px 10px; font-size: 13px;">
+              <!-- Dynamically populated -->
+            </select>
+            <button type="button" id="btn-add-member-to-room" class="btn-submit" style="padding: 7px 16px; font-size: 12.5px; white-space: nowrap;">
+              Thêm Vào Phòng
+            </button>
+          </div>
+        </div>
+
+        <!-- Current Members Section -->
+        <div>
+          <h4 style="font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
+            Danh Sách Thành Viên Trong Phòng
+          </h4>
+          <div id="info-room-members-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;">
+            <!-- Rendered by chat.js with Remove buttons -->
+          </div>
+        </div>
+
+        <!-- Delete Room Button (Admin only) -->
+        <button type="button" id="btn-delete-room" style="display: none; color: #FFFFFF; background: #E11D48; border: 1.5px solid #E11D48; width: 100%; font-weight: 700; padding: 10px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s ease; margin-bottom: 8px;">
+          🗑 Xóa Phòng Chat Này
+        </button>
+
+        <!-- Leave Room Button -->
+        <button type="button" id="btn-leave-current-room" style="color: #E11D48; border: 1.5px solid #FECDD3; background: #FFF5F7; width: 100%; font-weight: 700; padding: 10px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s ease;">
+          🚪 Rời Khỏi Phòng Chat Này
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden File Input for Attachment -->
+  <input type="file" id="chat-file-input" style="display: none;" accept="image/*,.pdf,.doc,.docx,.txt">
+
+  <!-- Client Libraries -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/socket.js"></script>
+  <script src="/js/chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+-- ====================================================================
+-- Seed Data (sạch — không còn dữ liệu demo)
+-- ====================================================================
+-- Dữ liệu demo (4 tài khoản demo, 4 phòng chat, tin nhắn mẫu) đã được
+-- LOẠI BỎ khỏi quá trình khởi tạo mới (fresh init).
+--
+-- Các tài khoản giờ đây được tạo theo cách chính thức:
+--   - Thành viên: đăng ký qua giao diện (role luôn = 'member').
+--   - Quản trị viên (Admin): chạy script khởi tạo một lần, mật khẩu băm bcrypt:
+--
+--       docker compose exec chat-app node src/scripts/create-admin.js
+--
+-- File này được giữ lại như một no-op để không làm gãy bất kỳ bước
+-- "chạy seed" nào trong tài liệu; nó không chèn bất kỳ dữ liệu nào.
+--
+-- Cấu trúc bảng, ràng buộc, khóa ngoại và chỉ mục được định nghĩa trong
+-- database/migrations/001_init_schema.sql (không xóa migrations).
+-- ====================================================================
