@@ -1,0 +1,56 @@
+# Prometheus Master Configuration - De 32 Chat System
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+
+# Alerting rules definition
+rule_files:
+  - "/etc/prometheus/alerts.yml"
+
+# Alertmanager configuration (optional if installed)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets: ['alertmanager:9093']
+
+scrape_configs:
+  # 1. Prometheus self-monitoring
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # 2. Chat Application Metrics (prom-client)
+  - job_name: "chat-app"
+    metrics_path: "/metrics"
+    scrape_interval: 10s
+    static_configs:
+      - targets: ["chat-app:3000"]
+        labels:
+          app: "chat-system"
+          environment: "production"
+
+  # 3. PostgreSQL Database Metrics (postgres-exporter)
+  - job_name: "postgres-exporter"
+    scrape_interval: 15s
+    static_configs:
+      - targets: ["postgres-exporter:9187"]
+        labels:
+          service: "postgres"
+          database: "chat_db"
+
+  # 4. Container Resource Metrics (cAdvisor)
+  - job_name: "cadvisor"
+    scrape_interval: 15s
+    static_configs:
+      - targets: ["cadvisor:8080"]
+        labels:
+          service: "container-metrics"
+
+  # 5. Host & OS Metrics (node-exporter)
+  - job_name: "node-exporter"
+    scrape_interval: 15s
+    static_configs:
+      - targets: ["node-exporter:9100"]
+        labels:
+          service: "host-metrics"

@@ -1,0 +1,57 @@
+groups:
+  - name: chat_system_alerts
+    rules:
+      # Alert: Service is down
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Dịch vụ {{ $labels.job }} ({{ $labels.instance }}) bị sập"
+          description: "Prometheus không thể thu thập metrics từ {{ $labels.job }} trong hơn 1 phút."
+
+      # Alert: High 5xx HTTP Error Rate on Chat App
+      - alert: ChatAppHighErrorRate
+        expr: |
+          (
+            sum(rate(chat_http_requests_total{status_code=~"5.."}[2m])) 
+            / 
+            (sum(rate(chat_http_requests_total[2m])) > 0)
+          ) * 100 > 5
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Tỷ lệ lỗi HTTP 5xx của ứng dụng Chat cao bất thường"
+          description: "Hơn 5% tổng số HTTP requests của chat-app bị lỗi 5xx trong 2 phút qua."
+
+      # Alert: Chat App Latency High (95th percentile > 1 second)
+      - alert: ChatAppHighLatency
+        expr: histogram_quantile(0.95, sum(rate(chat_http_request_duration_seconds_bucket[5m])) by (le)) > 1.0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Độ trễ xử lý HTTP của Chat App vượt ngưỡng 1 giây"
+          description: "Phân vị 95 (P95) của thời gian phản hồi HTTP lớn hơn 1000ms trong 5 phút."
+
+      # Alert: PostgreSQL Database Down
+      - alert: PostgresDown
+        expr: pg_up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "PostgreSQL Database không hoạt động"
+          description: "postgres-exporter không thể kết nối tới cơ sở dữ liệu chat_db."
+
+      # Alert: High Database Connections
+      - alert: PostgresHighConnections
+        expr: pg_stat_activity_count > 80
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Số lượng kết nối PostgreSQL cao (>80)"
+          description: "Cơ sở dữ liệu đang có {{ $value }} kết nối hoạt động đồng thời."
